@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import bcrypt from "bcryptjs";
 import {
   Container,
   TextField,
@@ -48,10 +47,12 @@ const SignIn = () => {
       "POST",
       postLoginDetails
     );
-    console.log(details);
-    if (details) {
+  
+    if (details.token) {
       localStorage.setItem("token", details.token);
       navigate("/DashBoard");
+    }else{
+      alert("Inavlid Email or Password")
     }
   };
 

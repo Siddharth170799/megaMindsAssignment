@@ -1,34 +1,29 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import BookCard from "./Card";
-import InputElement from "./InputElement";
-import ButtonElement from "./ButtonElement";
-import "./Dashboard.css"; 
+import AddBookForm from "./AddBookForm";
+import "./Dashboard.css";
 import useFetch from "../hooks/useFetch";
+import NewContext from "../context/NewContext";
 
 const DashBoard = () => {
-  const listOfBooks = process.env.REACT_APP_GET_BOOKS;
-  const addBook = process.env.REACT_APP_POST_BOOKS
-  const { data, fetchingData } = useFetch(
-   listOfBooks,
-    "GET"
-  );
-  const [books, setBooks] = useState([]);
+  const { booksData, setBooksData } = useContext(NewContext);
   const [formData, setFormData] = useState({
-    title: "",
-    author: "",
+    Title: "",
+    Author: "",
   });
 
+  const LIST_OF_BOOKS = process.env.REACT_APP_GET_BOOKS;
+  const POST_BOOK_URL = process.env.REACT_APP_POST_BOOKS;
+  const { data, fetchingData } = useFetch(LIST_OF_BOOKS, "GET");
+
   const inputElements = [
-    { name: "title", label: "Title", placeholder: "Enter Title" },
-    { name: "author", label: "Author", placeholder: "Enter Author" },
+    { name: "Title", label: "Title", placeholder: "Enter Title" },
+    { name: "Author", label: "Author", placeholder: "Enter Author" },
   ];
 
   const fetchingBooks = async () => {
- 
-   const postResponse =  await fetchingData(formData,"POST",addBook);
-
-    const getResponse = await fetchingData(null, "GET",listOfBooks);
+    await fetchingData(formData, "POST", POST_BOOK_URL);
+    setBooksData([...booksData, formData]);
   };
 
   const handleInputChange = (e) => {
@@ -36,7 +31,7 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
-    setBooks(data.data);
+    setBooksData(data.data);
   }, [data]);
 
   return (
@@ -45,25 +40,15 @@ const DashBoard = () => {
         <h1>Books</h1>
       </div>
 
-      <div className="input-container">
-        {inputElements.map((item, index) => (
-          <InputElement
-            key={index}
-            label={item.label}
-            value={formData[item.name]}
-            onChange={handleInputChange}
-            name={item.name}
-            placeholder={item.placeholder}
-          />
-        ))}
-      </div>
-
-      <div className="button-container">
-        <ButtonElement onClick={fetchingBooks} label={"Submit"} />
-      </div>
+      <AddBookForm
+        inputElements={inputElements}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        onSubmit={fetchingBooks}
+      />
 
       <div className="card-container">
-        {books?.map((item, index) => (
+        {booksData?.map((item, index) => (
           <BookCard key={index} title={item?.Title} author={item?.Author} />
         ))}
       </div>
