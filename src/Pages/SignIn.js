@@ -52,7 +52,7 @@ const SignIn = () => {
       localStorage.setItem("token", details.token);
       navigate("/DashBoard");
     }else{
-      alert("Inavlid Email or Password")
+      alert("Invalid Email or Password")
     }
   };
 
