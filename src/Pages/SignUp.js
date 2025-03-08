@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { validateName, validateEmail, validatePassword } from "../validations";
+import { validateName, validateEmail, validatePassword } from "../validations/validations";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { validateEmail, validatePassword } from "../validations";
+import { validateEmail, validatePassword } from "../validations/validations";
 import useFetch from "../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 
