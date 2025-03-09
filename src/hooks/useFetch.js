@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const useFetch = (url, type) => {
   const [data, setData] = useState([]);
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
 
   const fetchingData = async (
@@ -10,6 +11,7 @@ const useFetch = (url, type) => {
     methodType = type,
     customUrl = url
   ) => {
+    setLoading(true)
     try {
       const object = {
         method: methodType,
@@ -32,13 +34,17 @@ const useFetch = (url, type) => {
       setData(response2);
 
       return response2;
-    } catch (err) {}
+    } catch (err) {
+      return err.message
+    }finally{
+      setLoading(false)
+    }
   };
   useEffect(() => {
     fetchingData();
   }, []);
 
-  return { data, fetchingData };
+  return { data, fetchingData,loading,setLoading };
 };
 
 export default useFetch;

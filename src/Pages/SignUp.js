@@ -11,16 +11,23 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { validateName, validateEmail, validatePassword } from "../validations/validations";
+import {
+  validateName,
+  validateEmail,
+  validatePassword,
+} from "../validations/validations";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import CircularIndeterminate from "../components/Loader";
+import Header from "../components/Header";
+import SignIn from "./SignIn";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { fetchingData } = useFetch();
+  const { fetchingData, loading, setLoading } = useFetch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +57,7 @@ const SignUp = () => {
       );
 
       if (checkingDetails) {
+        setLoading(false);
         alert("Email Already Exists");
       } else {
         const hashedPassword = await bcrypt.hash(formData.password, 10);
@@ -70,92 +78,105 @@ const SignUp = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          mt: 8,
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 3,
-          textAlign: "center",
-          bgcolor: "white",
-        }}
-      >
-        <Typography variant="h5" mb={2}>
-          Sign Up
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            margin="normal"
-            required
-            error={!!errors.name}
-            helperText={errors.name}
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            margin="normal"
-            required
-            error={!!errors.email}
-            helperText={errors.email}
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            name="password"
-            type={showPassword ? "text" : "password"}
-            value={formData.password}
-            onChange={handleChange}
-            margin="normal"
-            required
-            error={!!errors.password}
-            helperText={errors.password}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+    <>
+      <Header SubMenu2={"SignIn"} />
+      {loading ? (
+        <div className="d-flex justify-content-center align-items-center vh-100">
+          <CircularIndeterminate />
+        </div>
+      ) : (
+        <Container maxWidth="xs">
+          <Box
+            sx={{
+              mt: 8,
+              p: 3,
+            
+              borderRadius: 2,
+              boxShadow: 3,
+              textAlign: "center",
+              bgcolor: "rgb(173, 216, 230)"
+              ,
             }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 2, bgcolor: "#1976d2", color: "white" }}
           >
-            Sign Up
-          </Button>
+            <Typography variant="h7" mb={2}>
+              Sign Up
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                margin="normal"
+                required
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                margin="normal"
+                required
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <TextField
+                fullWidth
+                label="Password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={formData.password}
+                onChange={handleChange}
+                margin="normal"
+                required
+                error={!!errors.password}
+                helperText={errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 2, bgcolor: "#1976d2", color: "white" }}
+              >
+                Sign Up
+              </Button>
 
-          <Typography variant="body2" sx={{ mt: 2 }}>
-            Already have an account?{" "}
-            <Button
-              sx={{
-                textTransform: "none",
-                color: "#1976d2",
-                fontWeight: "bold",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-              onClick={() => navigate("/signIn")}
-            >
-              Login here
-            </Button>
-          </Typography>
-        </form>
-      </Box>
-    </Container>
+              <Typography variant="body2" sx={{ mt: 2 }}>
+                Already have an account?{" "}
+                <Button
+                  sx={{
+                    textTransform: "none",
+                    color: "#1976d2",
+                    fontWeight: "bold",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => navigate("/signIn")}
+                >
+                  Login here
+                </Button>
+              </Typography>
+            </form>
+          </Box>
+        </Container>
+      )}
+    </>
   );
 };
 

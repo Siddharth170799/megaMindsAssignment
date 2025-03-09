@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@mui/material';
+import React from "react";
+import { Button } from "@mui/material";
 
 const ButtonElement = ({ label, onClick }) => {
   return (
@@ -8,7 +8,7 @@ const ButtonElement = ({ label, onClick }) => {
       color="primary"
       onClick={onClick}
       fullWidth
-      sx={{width:"100px"}}
+      sx={{ width: "100px" }}
     >
       {label}
     </Button>
