@@ -5,7 +5,10 @@ const useFetch = (url, type) => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
-  const fetchingData = async ( body1 = null, methodType = type,customUrl = url
+  const fetchingData = async (
+    body1 = null,
+    methodType = type,
+    customUrl = url
   ) => {
     try {
       const object = {
@@ -29,9 +32,7 @@ const useFetch = (url, type) => {
       setData(response2);
 
       return response2;
-    } catch (err) {
-      console.log("Error", err.message);
-    }
+    } catch (err) {}
   };
   useEffect(() => {
     fetchingData();

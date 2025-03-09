@@ -47,12 +47,12 @@ const SignIn = () => {
       "POST",
       postLoginDetails
     );
-  
+
     if (details.token) {
       localStorage.setItem("token", details.token);
       navigate("/DashBoard");
-    }else{
-      alert("Invalid Email or Password")
+    } else {
+      alert("Invalid Email or Password");
     }
   };
 

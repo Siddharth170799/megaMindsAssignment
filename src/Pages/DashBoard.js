@@ -6,6 +6,7 @@ import NewContext from "../context/NewContext";
 
 const DashBoard = () => {
   const { booksData, setBooksData } = useContext(NewContext);
+
   const [formData, setFormData] = useState({
     Title: "",
     Author: "",
@@ -23,17 +24,17 @@ const DashBoard = () => {
   const fetchingBooks = async () => {
     await fetchingData(formData, "POST", POST_BOOK_URL);
 
- };
+    setBooksData([...booksData, formData]);
+  };
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
-   
-      setBooksData(data.data); 
-   
-   
+    if (data.data) {
+      setBooksData(data.data);
+    }
   }, [data]);
 
   return (
